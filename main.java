@@ -1,45 +1,56 @@
 
 //Meenakshi Dhruv
-	import java.io.*;
-	import java.nio.file.*;
-	import java.util.Locale;
+	import java.io.IOException;
+	import java.nio.file.Files;
+	import java.nio.file.Path;
 
 	public class main {
-	    public static void main(String[] args) throws IOException {
+
+	    public static void main(String[] args) {
 
 	        long start = System.currentTimeMillis();
 
-	        // CHANGE THIS to your downloaded Gutenberg file
-	        Path input = Paths.get("Alice.txt");
-	        Path output = Paths.get("Frankenstien.txt");
+	        try {
+	            // Input files
+	            Path book1 = Path.of("Alice.txt");
+	            Path book2 = Path.of("Frankenstien.txt");
 
-	        String text = Files.readString(input);
+	            // Output files
+	            Path out1 = Path.of("Alice_modified.txt");
+	            Path out2 = Path.of("Frankenstien_modified.txt");
 
-	        StringBuilder sb = new StringBuilder(text.length());
-	        boolean newWord = true;
+	            // Read two books
+	            String text1 = Files.readString(book1);
+	            String text2 = Files.readString(book2);
 
-	        for (int i = 0; i < text.length(); i++) {
-	            char c = text.charAt(i);
+	            // Modify (capitalize words)
+	            String modified1 = capitalizeWords(text1);
+	            String modified2 = capitalizeWords(text2);
 
-	            if (Character.isLetter(c)) {
-	                if (newWord) {
-	                    sb.append(Character.toUpperCase(c));
-	                    newWord = false;
-	                } else {
-	                    sb.append(c);
-	                }
-	            } else {
-	                sb.append(c);
-	                newWord = true;
+	            // Save to new output files
+	            Files.writeString(out1, modified1);
+	            Files.writeString(out2, modified2);
+
+	            long end = System.currentTimeMillis();
+	            System.out.println("Finished processing both books!");
+	            System.out.println("Time taken: " + (end - start) + " ms");
+
+	        } catch (IOException e) {
+	            System.out.println("File error: " + e.getMessage());
+	        }
+	    }
+
+	    private static String capitalizeWords(String text) {
+	        String[] words = text.split("\\s+");
+	        StringBuilder sb = new StringBuilder();
+
+	        for (String w : words) {
+	            if (w.length() > 0) {
+	                sb.append(Character.toUpperCase(w.charAt(0)))
+	                        .append(w.substring(1).toLowerCase())
+	                        .append(" ");
 	            }
 	        }
-
-	        Files.writeString(output, sb.toString());
-
-	        long end = System.currentTimeMillis();
-
-	        System.out.println("Finished capitalizing words.");
-	        System.out.println("Time taken: " + (end - start) + " ms");
-	        System.out.println("Output saved to: " + output);
+	        return sb.toString();
 	    }
-}
+	}
