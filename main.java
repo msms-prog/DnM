@@ -16,8 +16,8 @@
 	            Path book2 = Path.of("Frankenstien.txt");
 
 	            // Output files
-	            Path out1 = Path.of("Alice_modified.txt");
-	            Path out2 = Path.of("Frankenstien_modified.txt");
+	            Path out1 = Path.of("Alice_modified1.txt");
+	            Path out2 = Path.of("Frankenstien_modified1.txt");
 
 	            // Read two books
 	            String text1 = Files.readString(book1);
